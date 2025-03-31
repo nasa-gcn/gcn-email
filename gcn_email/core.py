@@ -99,6 +99,7 @@ def kafka_message_to_email(message):
     email_message = EmailMessage()
     if topic.startswith("gcn.classic.text."):
         email_message.set_content(message.value().decode())
+    # Updated for new VOEvent notices (ex: gcn.notices.svom.voevent.*)
     elif ".voevent." in topic:
         email_message.add_attachment(
             message.value(),
