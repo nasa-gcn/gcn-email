@@ -107,9 +107,18 @@ def kafka_message_to_email(message):
             subtype="xml",
         )
     elif topic.startswith("gcn.notices."):
-        valueJson = json.loads(message.value().decode())
-        replace_long_values(valueJson, 512)
-        email_message.set_content(json.dumps(valueJson, indent=4))
+        # New voevent topics (ex: gcn.notices.svom.voevent.grm)
+        if ".voevent." in topic:
+            email_message.add_attachment(
+                message.value(),
+                filename="notice.xml",
+                maintype="application",
+                subtype="xml",
+            )
+        else:
+            valueJson = json.loads(message.value().decode())
+            replace_long_values(valueJson, 512)
+            email_message.set_content(json.dumps(valueJson, indent=4))
     else:
         email_message.add_attachment(
             message.value(),
