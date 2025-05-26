@@ -11,7 +11,7 @@ boto3 = "*"
 gcn-kafka = "^0.3.3"
 python = "^3.10"
 ratelimit = "*"
-click = "^8.1.8"
+click = "^8.2.1"
 prometheus-client = "^0.21.1"
 
 [tool.poetry.scripts]
