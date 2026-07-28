@@ -113,8 +113,7 @@ def kafka_message_to_email(message):
             replace_long_values(valueJson, 512)
             email_message.set_content(json.dumps(valueJson, indent=4))
         except Exception as e:
-            print("Failed to parse JSON, returning as an attachment:")
-            print(e)
+            log.exception("Failed to parse JSON, returning as an attachment: %s", e)
             email_message.add_attachment(message.value(),
                         filename=f"{topic}-notice.bin",
                         maintype="application",
