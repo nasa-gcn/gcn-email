@@ -110,14 +110,12 @@ def kafka_message_to_email(message):
     elif topic.startswith("gcn.notices."):
         try:
             valueJson = json.loads(message.value().decode())
+        except UnicodeError, json.JSONDecodeError:
+            log.exception("Decoding JSON failed")
+            email_message.set_content(json.dumps({"error": "decoding message failed"}, indent=4))
+        else:
             replace_long_values(valueJson, 512)
             email_message.set_content(json.dumps(valueJson, indent=4))
-        except Exception as e:
-            log.exception("Failed to parse JSON, returning as an attachment: %s", e)
-            email_message.add_attachment(message.value(),
-                        filename=f"{topic}-notice.bin",
-                        maintype="application",
-                        subtype="octet-stream",)
     else:
         email_message.add_attachment(
             message.value(),
