@@ -112,7 +112,9 @@ def kafka_message_to_email(message):
             valueJson = json.loads(message.value().decode())
         except UnicodeError, json.JSONDecodeError:
             log.exception("Decoding JSON failed")
-            email_message.set_content(json.dumps({"error": "decoding message failed"}, indent=4))
+            email_message.set_content(
+                json.dumps({"error": "decoding message failed"}, indent=4)
+            )
         else:
             replace_long_values(valueJson, 512)
             email_message.set_content(json.dumps(valueJson, indent=4))
