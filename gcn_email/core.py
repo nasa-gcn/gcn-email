@@ -107,7 +107,7 @@ def kafka_message_to_email(message):
             maintype="application",
             subtype="xml",
         )
-    elif topic.startswith("gcn.notices."):
+    elif topic.startswith("gcn.notices.") or topic.startswith("gcn.circulars"):
         try:
             valueJson = json.loads(message.value().decode())
         except UnicodeError, json.JSONDecodeError:
