@@ -110,7 +110,7 @@ def kafka_message_to_email(message):
     elif topic.startswith(("gcn.notices.", "gcn.circulars", "gcn.heartbeat")):
         try:
             valueJson = json.loads(message.value().decode())
-        except UnicodeError, json.JSONDecodeError:
+        except (UnicodeError, json.JSONDecodeError):
             log.exception("Decoding JSON failed")
             email_message.set_content(
                 json.dumps({"error": "decoding message failed"}, indent=4)
